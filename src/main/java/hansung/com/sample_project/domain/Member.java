@@ -23,4 +23,14 @@ public class Member {
 
     @Lob
     private String image;
+
+    public Member() {}
+    public Member(String name, String password, double star, String content, String image) {
+        this.name = name;
+        this.password = password;
+        this.star = star;
+        this.content = content;
+        this.image = image;
+
+    }
 }
