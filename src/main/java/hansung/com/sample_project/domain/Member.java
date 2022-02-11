@@ -22,12 +22,15 @@ public class Member {
     @Lob
     private String content;
 
+    private String fileName;
+
 
     public Member() {}
-    public Member(String name, String password, double star, String content) {
+    public Member(String name, String password, double star, String content, String fileName) {
         this.name = name;
         this.password = password;
         this.star = star;
         this.content = content;
+        this.fileName = fileName;
     }
 }
