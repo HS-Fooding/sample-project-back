@@ -3,6 +3,7 @@ package hansung.com.sample_project.domain;
 import lombok.Getter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 
 @Entity
@@ -21,16 +22,12 @@ public class Member {
     @Lob
     private String content;
 
-    @Lob
-    private String image;
 
     public Member() {}
-    public Member(String name, String password, double star, String content, String image) {
+    public Member(String name, String password, double star, String content) {
         this.name = name;
         this.password = password;
         this.star = star;
         this.content = content;
-        this.image = image;
-
     }
 }
