@@ -38,7 +38,7 @@ public class MemberService {
         return memberRepository.findAll();
     }
 
-    public String findImage(MultipartFile image) {
+    public String saveImage(MultipartFile image) {
         String fileName = "";
 
         // [서버 로컬에 이미지 저장 로직 수행 실시]
@@ -72,7 +72,7 @@ public class MemberService {
                 System.out.println("=======================================");
                 System.out.println("\n");
 //                folderRoot = "/Home/Resource/assets/"; //리눅스 경로
-                folderRoot = "/home/1791101/images/"; //리눅스 경로
+                folderRoot = "/capstone/sample_project_jhs/"; //리눅스 경로
             } else {
                 System.out.println("\n");
                 System.out.println("=======================================");

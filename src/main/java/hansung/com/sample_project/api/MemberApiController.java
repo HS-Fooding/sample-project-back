@@ -1,7 +1,5 @@
 package hansung.com.sample_project.api;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import hansung.com.sample_project.domain.Member;
 import hansung.com.sample_project.service.MemberService;
 import lombok.*;
@@ -9,14 +7,12 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -28,10 +24,12 @@ import java.util.stream.Collectors;
 public class MemberApiController {
     private final MemberService memberService;
 
-    @PostMapping("/sample_project/members/login")
+    @PostMapping("/members/content")
     public MemberDto showMember(@RequestBody @Valid getAMemberRequest request) throws IOException {
         Member member = memberService.findMember(Long.parseLong(request.getId()));
-        String path = "C:/Users/bs860/IdeaProjects/images/" + member.getFileName();
+//        String path = "C:/Users/bs860/IdeaProjects/images/" + member.getFileName();
+        String path= "/capstone/sample_project_jhs/" + member.getFileName(); //리눅스 경로
+
 
         Resource resource = new FileSystemResource(path);
 
@@ -46,7 +44,6 @@ public class MemberApiController {
         header.add("Content-Type", "multipart/form-data");
 
         return new MemberDto(member.getName(), member.getStar(), member.getContent(), header, resource, HttpStatus.OK);
-//        return new MemberDto(header, resource, HttpStatus.OK);
     }
 
     @Data
@@ -68,7 +65,7 @@ public class MemberApiController {
     }
 
 
-    @GetMapping("/sample_project/members")
+    @GetMapping("/members")
     public Result members() {
         List<Member> findMembers = memberService.findMembers();
         List<MemberListDto> collect = findMembers.stream()
@@ -78,10 +75,10 @@ public class MemberApiController {
         return new Result(collect);
     }
 
-    @PostMapping(value = "/sample_project/members")
+    @PostMapping("/members")
     public CreateMemberResponse saveMember(@RequestPart @Valid CreateMemberRequest request,
                                            @RequestPart MultipartFile image) {
-        String fileName = memberService.findImage(image);
+        String fileName = memberService.saveImage(image);
         Member member = new Member(request.getName(), request.getPassword(),
                 request.getStar(), request.getContent(), fileName);
         Long id = memberService.join(member);
@@ -128,5 +125,4 @@ public class MemberApiController {
             this.name = name;
         }
     }
-
 }
