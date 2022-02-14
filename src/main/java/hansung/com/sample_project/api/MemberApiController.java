@@ -7,6 +7,7 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -43,7 +44,8 @@ public class MemberApiController {
 //        header.add("Content-Type", Files.probeContentType(filePath));
         header.add("Content-Type", "multipart/form-data");
 
-        return new MemberDto(member.getName(), member.getStar(), member.getContent(), header, resource, HttpStatus.OK);
+        return new MemberDto(member.getName(), member.getStar(), member.getContent(),
+                header, resource, HttpStatus.OK);
     }
 
     @Data
@@ -75,9 +77,10 @@ public class MemberApiController {
         return new Result(collect);
     }
 
-    @PostMapping("/members")
-    public CreateMemberResponse saveMember(@RequestPart @Valid CreateMemberRequest request,
-                                           @RequestPart MultipartFile image) {
+    @PostMapping(value = "/members", consumes = {MediaType.APPLICATION_JSON_VALUE,
+                                                MediaType.MULTIPART_FORM_DATA_VALUE})
+    public CreateMemberResponse saveMember(@RequestPart("request") @Valid CreateMemberRequest request,
+                                           @RequestPart("image") MultipartFile image) {
         String fileName = memberService.saveImage(image);
         Member member = new Member(request.getName(), request.getPassword(),
                 request.getStar(), request.getContent(), fileName);
