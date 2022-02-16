@@ -3,7 +3,8 @@ package hansung.com.sample_project.domain;
 import lombok.Getter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -13,23 +14,19 @@ public class Member {
     @Column(name = "member_id")
     private Long id;
 
+    private String user_id;
+    private String user_password;
+
     private String name;
-    private String password;
-    private double star;
-    private LocalDateTime createdAt;
+    private int age;
+    private boolean sex;
 
-    @Lob
-    private String content;
+    @OneToMany(mappedBy = "author")
+    private List<Review> reviews = new ArrayList<>();
 
-    private String fileName;
+    @Enumerated(EnumType.STRING)
+    private Job job;
 
-
-    public Member() {}
-    public Member(String name, String password, double star, String content, String fileName) {
-        this.name = name;
-        this.password = password;
-        this.star = star;
-        this.content = content;
-        this.fileName = fileName;
-    }
+    @Enumerated(EnumType.STRING)
+    private Favor favor;
 }
