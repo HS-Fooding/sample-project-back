@@ -13,7 +13,10 @@ class SampleProjectApplicationTests {
 
 	@Test
 	void generateHashedPassword() {
-		String pwd = encoder.encode("fooding");
+		System.out.println("####################################");
+		String pwd = encoder.encode("wjdgustmd");
 		System.out.println(pwd);
+		System.out.println("####################################");
+
 	}
 }

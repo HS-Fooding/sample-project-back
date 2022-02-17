@@ -4,6 +4,7 @@ spring:
     username: sa
     password:
     driver-class-name: org.h2.Driver
+    initialization-mode: always
   security:
     user:
       name: fooding
@@ -16,6 +17,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
+    defer-datasource-initialization: true
   logging:
     level:
       org.hibernate.SQL: debug
