@@ -8,7 +8,8 @@ import java.util.List;
 
 @Entity
 @Getter
-public class Member {
+@Table(name = "users")
+public class User {
 
     @Id @GeneratedValue
     private Long id;
@@ -36,10 +37,10 @@ public class Member {
     private List<Review> reviews = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
-    private Comment.Job job;
+    private Job job;
 
     @Enumerated(EnumType.STRING)
-    private Comment.Favor favor;
+    private Favor favor;
 
     // 양방향 편의 메서드
     public void setReviews(Review review) {

@@ -1,10 +1,10 @@
 package hansung.com.sample_project.service;
 
 import hansung.com.sample_project.domain.Image;
-import hansung.com.sample_project.domain.Member;
+import hansung.com.sample_project.domain.User;
 import hansung.com.sample_project.domain.Review;
 import hansung.com.sample_project.repository.ImageRepository;
-import hansung.com.sample_project.repository.MemberRepository;
+import hansung.com.sample_project.repository.UserRepository;
 import hansung.com.sample_project.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,12 +24,12 @@ import java.util.List;
 public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final ImageRepository imageRepository;
-    private final MemberRepository memberRepository;
+    private final UserRepository userRepository;
 
     // 글 등록
     @Transactional
     public Long register(Long memberId, Review review, Image... images) {
-        Member member = memberRepository.findOne(memberId);
+        User member = userRepository.findById(memberId);
         review.setImages(images);
         member.getReviews().add(review);
 

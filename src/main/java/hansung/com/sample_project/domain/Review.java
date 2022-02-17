@@ -19,8 +19,8 @@ public class Review {
     private String title;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "member_id")
-    private Member author;
+    @JoinColumn(name = "user_id")
+    private User author;
 
     @Lob
     private String content;
@@ -36,8 +36,8 @@ public class Review {
     @Embedded
     private Time time;
 
-    public void setAuthor(Member member) {
-        this.author = member;
+    public void setAuthor(User user) {
+        this.author = user;
     }
 
     public void setImages(Image... image) {

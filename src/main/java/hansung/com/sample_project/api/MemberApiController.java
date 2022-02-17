@@ -1,6 +1,6 @@
 package hansung.com.sample_project.api;
 
-import hansung.com.sample_project.service.MemberService;
+import hansung.com.sample_project.service.UserService;
 import lombok.*;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,6 +9,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 public class MemberApiController {
-    private final MemberService memberService;
+    private final UserService userService;
 
 }

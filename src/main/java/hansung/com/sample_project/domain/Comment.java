@@ -42,12 +42,4 @@ public class Comment {
     public void setParent(Comment comment) {
         this.parent = comment;
     }
-
-    public enum Favor {
-        KOR, JAP, US, SNACK
-    }
-
-    public enum Job {
-        SERVICE, STUDENT, EDUCATE
-    }
 }
