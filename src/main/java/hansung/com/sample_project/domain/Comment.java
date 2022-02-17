@@ -32,4 +32,22 @@ public class Comment {
 
     @OneToMany(mappedBy = "parent")
     private List<Comment> child = new ArrayList<>();
+
+    // ## 양방향 연관관계에 대한 편의 메서드 ## //
+    public void addChildCategory(Comment child) {
+        this.child.add(child);
+        child.setParent(this);
+    }
+
+    public void setParent(Comment comment) {
+        this.parent = comment;
+    }
+
+    public enum Favor {
+        KOR, JAP, US, SNACK
+    }
+
+    public enum Job {
+        SERVICE, STUDENT, EDUCATE
+    }
 }

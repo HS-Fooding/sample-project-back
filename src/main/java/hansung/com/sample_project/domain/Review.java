@@ -35,4 +35,14 @@ public class Review {
 
     @Embedded
     private Time time;
+
+    public void setAuthor(Member member) {
+        this.author = member;
+    }
+
+    public void setImages(Image... image) {
+        for (Image i : image) {
+            images.add(i);
+        }
+    }
 }
