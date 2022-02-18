@@ -1,20 +1,19 @@
 package hansung.com.sample_project.api;
 
-import hansung.com.sample_project.domain.User;
+import hansung.com.sample_project.dto.SignInRequest;
+import hansung.com.sample_project.dto.SignInResponse;
+import hansung.com.sample_project.dto.SignUpRequest;
+import hansung.com.sample_project.dto.SignUpResponse;
+import hansung.com.sample_project.exception.LoginFailureException;
+import hansung.com.sample_project.exception.UserEmailAlreadyExistsException;
+import hansung.com.sample_project.exception.UserIdExistsException;
+import hansung.com.sample_project.exception.UserNickNameExistsException;
 import hansung.com.sample_project.service.UserService;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.validator.constraints.Length;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
 
 
 @CrossOrigin("*")
@@ -23,41 +22,20 @@ import javax.validation.constraints.NotEmpty;
 public class UserApiController {
     private final UserService userService;
 
-    @PostMapping("/join")
-    public JoinUserResponse joinUser(@RequestBody @Valid JoinUserRequest request) {
-        User user = new User(request.getUserId(), request.getEmail(), request.getUserPassword(),
-                        request.getName(), request.getAge(), request.getSex());
-        Long id = userService.join(user);
-        return new JoinUserResponse(id, request.getName());
+    @PostMapping("/api/join")
+    @ResponseStatus(HttpStatus.CREATED)
+    public SignUpResponse join(@RequestBody @Valid SignUpRequest request)
+            throws UserIdExistsException, UserEmailAlreadyExistsException, UserNickNameExistsException {
+        userService.signUp(request);
+
+        return new SignUpResponse(HttpStatus.OK);
     }
 
-    @Data
-    @Getter
-    static class JoinUserRequest {
-        @NotEmpty
-        private String userId;
+    @PostMapping("/api/login")
+    @ResponseStatus(HttpStatus.OK)
+    public SignInResponse login(@RequestBody @Valid SignInRequest request)
+            throws LoginFailureException {
 
-        @NotEmpty @Email
-        private String email;
-
-        @NotEmpty @Length(min = 3, max = 10)
-        private String userPassword;
-
-        @NotEmpty
-        private String name;
-
-        @NotEmpty
-        private int age;
-
-        private Boolean sex;
+        return userService.signIn(request);
     }
-
-    @Data
-    @AllArgsConstructor
-    static class JoinUserResponse {
-        private Long id;
-        private String name;
-
-    }
-
 }

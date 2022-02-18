@@ -36,13 +36,18 @@ public class Review {
     @Embedded
     private Time time;
 
-    public void setAuthor(User user) {
+    private int count;
+
+    // 연관관계 편의 메서드
+    public void addAuthor(User user) {
         this.author = user;
+        author.getReviews().add(this);
     }
 
-    public void setImages(Image... image) {
+    public void addImages(Image... image) {
         for (Image i : image) {
             images.add(i);
         }
     }
+
 }

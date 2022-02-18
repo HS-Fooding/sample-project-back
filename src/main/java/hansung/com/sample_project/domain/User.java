@@ -1,5 +1,6 @@
 package hansung.com.sample_project.domain;
 
+import hansung.com.sample_project.dto.SignUpRequest;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -13,10 +14,11 @@ import java.util.List;
 @NoArgsConstructor
 public class User {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String userId;
 
     @Column(nullable = false)
@@ -25,13 +27,11 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @ManyToMany(cascade=CascadeType.MERGE) @JoinTable(
-            name="user_role",
-            joinColumns={@JoinColumn(name="user_id", referencedColumnName="id")},
-            inverseJoinColumns={@JoinColumn(name="role_id", referencedColumnName="id")})
-    private List<Role> roles;
+    private String userName;
 
-    private String name;
+    @Column(unique = true)
+    private String nickName;
+
     private int age;
     private boolean sex;
 
@@ -44,18 +44,38 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Favor favor;
 
-    // 양방향 편의 메서드
-    public void setReviews(Review review) {
-        reviews.add(review);
-        review.setAuthor(this);
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    public void setPasswordAndRole(String password, Role role) {
+        this.userPassword = password;
+        this.role = role;
     }
 
-    public User(String userId, String email, String userPassword, String name, int age, Boolean sex) {
+
+    public User(SignUpRequest request) {
+        this.userId = request.getUserId();
+        this.userPassword = request.getUserPassword();
+        this.sex = request.getSex();
+        this.userName = request.getUserName();
+        this.nickName = request.getNickName();
+        this.email = request.getEmail();
+        this.age = request.getAge();
+        this.role = request.getRole();
+    }
+
+    public User(String userId, String userPassword, String userName, String nickName, Boolean sex, String email, int age, Role role) {
         this.userId = userId;
-        this.email = email;
         this.userPassword = userPassword;
-        this.name = name;
-        this.age = age;
         this.sex = sex;
+        this.userName = userName;
+        this.nickName = nickName;
+        this.email = email;
+        this.age = age;
+        this.role = role;
+    }
+
+    public void setReviews(Review review) {
+        getReviews().add(review);
     }
 }

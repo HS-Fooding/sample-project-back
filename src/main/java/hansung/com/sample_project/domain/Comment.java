@@ -33,13 +33,18 @@ public class Comment {
     @OneToMany(mappedBy = "parent")
     private List<Comment> child = new ArrayList<>();
 
+    public void setParent(Comment comment) {
+        this.parent = comment;
+    }
+
     // ## 양방향 연관관계에 대한 편의 메서드 ## //
+    public void addReview(Review review) {
+        this.comment_review = review;
+        review.getComments().add(this);
+    }
+
     public void addChildCategory(Comment child) {
         this.child.add(child);
         child.setParent(this);
-    }
-
-    public void setParent(Comment comment) {
-        this.parent = comment;
     }
 }

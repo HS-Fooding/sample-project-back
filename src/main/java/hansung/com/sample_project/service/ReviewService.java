@@ -30,7 +30,7 @@ public class ReviewService {
     @Transactional
     public Long register(Long memberId, Review review, Image... images) {
         User member = userRepository.findById(memberId);
-        review.setImages(images);
+        review.addImages(images);
         member.getReviews().add(review);
 
         return review.getId();
