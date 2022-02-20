@@ -2,10 +2,9 @@ package hansung.com.sample_project;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan("hansung.com.sample_project.service.UserService")
+//@ComponentScan("hansung.com.sample_project.service.UserService")
 public class SampleProjectApplication {
 
     public static void main(String[] args) {

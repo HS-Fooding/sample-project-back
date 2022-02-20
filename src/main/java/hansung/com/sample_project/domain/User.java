@@ -24,7 +24,7 @@ public class User {
     @Column(nullable = false)
     private String userPassword;
 
-    @Column(nullable = false, unique = true)
+    @Column(unique = true)
     private String email;
 
     private String userName;
@@ -56,9 +56,9 @@ public class User {
     public User(SignUpRequest request) {
         this.userId = request.getUserId();
         this.userPassword = request.getUserPassword();
-        this.sex = request.getSex();
         this.userName = request.getUserName();
         this.nickName = request.getNickName();
+        this.sex = request.getSex();
         this.email = request.getEmail();
         this.age = request.getAge();
         this.role = request.getRole();
@@ -77,5 +77,8 @@ public class User {
 
     public void setReviews(Review review) {
         getReviews().add(review);
+    }
+    public void setUserPassword(String password) {
+        this.userPassword = password;
     }
 }

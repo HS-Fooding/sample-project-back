@@ -1,10 +1,7 @@
 package hansung.com.sample_project.api;
 
-import hansung.com.sample_project.dto.SignInRequest;
-import hansung.com.sample_project.dto.SignInResponse;
 import hansung.com.sample_project.dto.SignUpRequest;
 import hansung.com.sample_project.dto.SignUpResponse;
-import hansung.com.sample_project.exception.LoginFailureException;
 import hansung.com.sample_project.exception.UserEmailAlreadyExistsException;
 import hansung.com.sample_project.exception.UserIdExistsException;
 import hansung.com.sample_project.exception.UserNickNameExistsException;
@@ -22,18 +19,24 @@ import javax.validation.Valid;
 public class UserApiController {
     private final UserService userService;
 
-    @PostMapping("/api/join")
+    @PostMapping("/hello/join")
     public SignUpResponse join(@RequestBody @Valid SignUpRequest request)
             throws UserIdExistsException, UserEmailAlreadyExistsException, UserNickNameExistsException {
-        userService.signUp(request);
+        System.out.println("###############GOOOOD############");
+        userService.join(request);
 
         return new SignUpResponse(HttpStatus.OK);
     }
 
-    @PostMapping("/api/login")
+    @GetMapping("/hello/join")
+    public String getmapping() {
+        return "hello";
+    }
+
+    /*@PostMapping("/api/login")
     public SignInResponse login(@RequestBody @Valid SignInRequest request)
             throws LoginFailureException {
 
         return userService.signIn(request);
-    }
+    }*/
 }

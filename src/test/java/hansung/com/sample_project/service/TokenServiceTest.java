@@ -1,6 +1,5 @@
 package hansung.com.sample_project.service;
 
-import hansung.com.sample_project.handler.JwtHandler;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
