@@ -30,11 +30,11 @@ public class UserRepository {
                 .getSingleResult();
     }
     // 아이디로 조회
-    public User findByUserId(String userId) {
+   /* public User findByUserId(String userId) {
         return em.createQuery("select u from User u where u.userId = :userId", User.class)
                 .setParameter("userId", userId)
                 .getSingleResult();
-    }
+    }*/
     
     public Boolean existByUserId(String userId) {
         try {
@@ -78,6 +78,12 @@ public class UserRepository {
     // 모두 조회
     public List<User> findAll() {
         return em.createQuery("select u from User u", User.class)
+                .getResultList();
+    }
+
+    public List<User> findByUserId(String userId) {
+        return em.createQuery("select u from User u where userId = :userId", User.class)
+                .setParameter("userId", userId)
                 .getResultList();
     }
 }
