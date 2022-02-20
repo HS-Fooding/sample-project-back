@@ -23,7 +23,6 @@ public class UserApiController {
     private final UserService userService;
 
     @PostMapping("/api/join")
-    @ResponseStatus(HttpStatus.CREATED)
     public SignUpResponse join(@RequestBody @Valid SignUpRequest request)
             throws UserIdExistsException, UserEmailAlreadyExistsException, UserNickNameExistsException {
         userService.signUp(request);
@@ -32,7 +31,6 @@ public class UserApiController {
     }
 
     @PostMapping("/api/login")
-    @ResponseStatus(HttpStatus.OK)
     public SignInResponse login(@RequestBody @Valid SignInRequest request)
             throws LoginFailureException {
 

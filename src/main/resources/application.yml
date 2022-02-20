@@ -4,12 +4,12 @@ spring:
     username: sa
     password:
     driver-class-name: org.h2.Driver
-    initialization-mode: always
+#    initialization-mode: always
   security:
     user:
       name: fooding
       password: fooding
-      role: USER, ADMIN
+      role: USER
   jpa:
     hibernate:
       ddl-auto: create

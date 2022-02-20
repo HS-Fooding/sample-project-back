@@ -11,6 +11,8 @@ import hansung.com.sample_project.exception.UserIdExistsException;
 import hansung.com.sample_project.exception.UserNickNameExistsException;
 import hansung.com.sample_project.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -18,6 +20,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -89,12 +93,15 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
         User user = userRepository.findByUserId(userId);
-
-//        return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getUserPassword(), getAuthorities(user));
-        return (UserDetails) user;
+        System.out.println("######################fuck");
+        return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getUserPassword(), getAuthorities());
+    }
+    private Collection<? extends GrantedAuthority> getAuthorities() {
+        return Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
-    /*private static Collection<? extends GrantedAuthority> getAuthorities(User user) {
+
+  /*  private static Collection<? extends GrantedAuthority> getAuthorities(User user) {
         String[] userRoles = user.getRoles()
                 .stream()
                 .map((role) -> role.getRoleName())
