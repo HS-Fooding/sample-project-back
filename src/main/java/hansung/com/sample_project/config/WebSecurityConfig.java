@@ -14,9 +14,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                    .antMatchers("/hello/join", "/hello/login", "/login", "/what").permitAll()
-                .antMatchers(HttpMethod.POST, "/hello/join").permitAll()
-                .antMatchers(HttpMethod.POST, "/hello/login").permitAll()
+                    .antMatchers("/join", "/login", "logout", "/hello").permitAll()
+                .antMatchers(HttpMethod.POST, "/join").permitAll()
+                .antMatchers(HttpMethod.POST, "/login").permitAll()
+                .antMatchers(HttpMethod.POST, "/logout").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().disable()

@@ -1,7 +1,9 @@
 package hansung.com.sample_project.service;
 
 import hansung.com.sample_project.domain.User;
+import hansung.com.sample_project.dto.SignInRequest;
 import hansung.com.sample_project.dto.SignUpRequest;
+import hansung.com.sample_project.exception.LoginFailureException;
 import hansung.com.sample_project.exception.UserEmailAlreadyExistsException;
 import hansung.com.sample_project.exception.UserIdExistsException;
 import hansung.com.sample_project.exception.UserNickNameExistsException;
@@ -63,12 +65,19 @@ public class UserService implements UserDetailsService {
         List<User> userTmp = userRepository.findByUserId(userId);
         User user = userTmp.get(0);
 
+        System.out.println("!!!!!!!!!!!!!!!!!!!!I'm here bro!!!!!!!!!!!!!!!");
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(String.valueOf(user.getRole())));
 
         return new org.springframework.security.core.userdetails.User(user.getUserId(), user.getUserPassword(), authorities);
     }
 
-    // 로그인
+    public void validatePassword(SignInRequest req) throws LoginFailureException {
+        List<User> userTmp = userRepository.findByUserId(req.getUserId());
+        User user = userTmp.get(0);
 
+        if(!passwordEncoder.matches(req.getUserPassword(), user.getUserPassword())) {
+            throw new LoginFailureException();
+        }
+    }
 }
