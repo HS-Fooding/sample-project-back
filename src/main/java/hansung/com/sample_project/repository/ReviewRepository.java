@@ -19,9 +19,14 @@ public class ReviewRepository {
     }
 
     // 글 찾기
-    public List<Review> findOne(Long id) {
+    public Review findOne(Long id) {
         return em.createQuery("select r from Review r where id = :id", Review.class)
                 .setParameter("id", id)
+                .getSingleResult();
+    }
+
+    public List<Review> getAll(){
+        return em.createQuery("select r from Review r", Review.class)
                 .getResultList();
     }
 }

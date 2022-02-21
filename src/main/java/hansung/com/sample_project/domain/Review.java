@@ -1,6 +1,10 @@
 package hansung.com.sample_project.domain;
 
+import hansung.com.sample_project.dto.ReviewPostDto;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -9,7 +13,8 @@ import java.util.List;
 import static javax.persistence.FetchType.LAZY;
 
 @Entity
-@Getter
+@Getter @Setter
+@NoArgsConstructor
 public class Review {
 
     @Id @GeneratedValue
@@ -50,4 +55,11 @@ public class Review {
         }
     }
 
+    public Review(ReviewPostDto reviewPostDto){
+        this.title = reviewPostDto.getTitle();
+        this.content = reviewPostDto.getContent();
+        this.star = reviewPostDto.getStar();
+        this.time = new Time();
+        this.count = 0;
+    }
 }

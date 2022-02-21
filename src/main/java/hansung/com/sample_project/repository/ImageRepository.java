@@ -13,8 +13,13 @@ public class ImageRepository {
 
     private final EntityManager em;
 
-    public void save(Image image) {
+    public void saveImage(Image image) {
         em.persist(image);
+    }
+
+    public void saveImages(List<Image> images){
+        for(Image image: images)
+            em.persist(image);
     }
 
     public List<Image> findOne(Long id) {

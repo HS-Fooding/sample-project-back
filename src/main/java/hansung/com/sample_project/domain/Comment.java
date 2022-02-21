@@ -26,6 +26,10 @@ public class Comment {
     @JoinColumn(name = "review_id")
     private Review comment_review;
 
+    @ManyToOne
+    @JoinColumn(name = "id")
+    private User author;
+
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "parent_id")
     private Comment parent;
