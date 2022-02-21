@@ -19,6 +19,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
@@ -60,6 +63,7 @@ public class ReviewService {
         return reviewSimpleGetDtoList;
     }
 
+    @Transactional
     public ResponseEntity<ReviewSimpleGetDto> postReview(HttpSession session, ReviewPostDto reviewPostDto, List<MultipartFile> images) {
 //        UserInfo userInfo = (UserInfo)session.getAttribute("userInfo");
 //        if(userInfo == null) return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -70,26 +74,31 @@ public class ReviewService {
         author.setUserPassword("1234");
         author.setNickName("testNickname");
         author.setEmail("teset@test.test");
+        userRepository.save(author);
         List<String> imagePaths = ImageHandler.upload(images);
         List<Image> savedImages = new ArrayList<>();
 
-        Review review = Review.builder()
-                .author(author)
-                .title(reviewPostDto.getTitle())
-                .content(reviewPostDto.getContent())
-                .star(reviewPostDto.getStar())
-                .time(new Time())
-                .count(0)
-                .build();
+//        Review review = Review.builder()
+//                .author(author)
+//                .title(reviewPostDto.getTitle())
+//                .content(reviewPostDto.getContent())
+//                .star(reviewPostDto.getStar())
+//                .time(new Time())
+//                .count(0)
+//                .build();
+        Review review = new Review(reviewPostDto);
+        review.setAuthor(author);
 
         reviewRepository.save(review);
 
+
         for(String imagePath : imagePaths){
             Image savedImage = new Image();
-            savedImage.setReview(review);
             savedImage.setPath(imagePath);
+            savedImage.setReview(review);
             savedImages.add(savedImage);
         }
+        review.setImages(savedImages);
         imageRepository.saveImages(savedImages);
         return new ResponseEntity<>(ReviewSimpleGetDto.from(review), HttpStatus.OK);
     }

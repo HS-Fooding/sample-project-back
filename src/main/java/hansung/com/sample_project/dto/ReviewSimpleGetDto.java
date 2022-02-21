@@ -6,6 +6,7 @@ import hansung.com.sample_project.domain.Review;
 import lombok.Getter;
 
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,9 +18,7 @@ public class ReviewSimpleGetDto {
     private String content;
     private List<String> images = new ArrayList<>();
     private float star;
-    private List<Comment> comment;
     private String registerDate;
-    private String modifiedDate;
 
     public ReviewSimpleGetDto(Review review){
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -27,11 +26,12 @@ public class ReviewSimpleGetDto {
         this.title = review.getTitle();
         this.author = review.getAuthor().getNickName();
         this.content = review.getContent();
-        for(Image image: review.getImages())
-            this.images.add(image.getPath());
+        if(review.getImages() != null) {
+            for (Image image : review.getImages())
+                this.images.add(image.getPath());
+        }
         this.star= review.getStar();
-        this.comment = review.getComments();
-        this.registerDate = df.format(review.getTime().getRegisterLocalDateTime());
+        this.registerDate = review.getTime().getRegisterLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 
     public static ReviewSimpleGetDto from(Review review){

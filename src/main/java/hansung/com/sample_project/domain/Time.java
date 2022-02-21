@@ -13,6 +13,6 @@ public class Time {
 
     public Time(){
         registerLocalDateTime = LocalDateTime.now();
-        modifiedLocalDateTime = LocalDateTime.now();
+        modifiedLocalDateTime = registerLocalDateTime;
     }
 }

@@ -24,8 +24,8 @@ public class ReviewApiController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<ReviewSimpleGetDto> postReview(HttpSession session,
-                                                         @RequestPart ReviewPostDto reviewPostDto,
-                                                         @RequestPart(value = "images", required = false) List<MultipartFile> images){
+                                                         @RequestPart(value = "review") ReviewPostDto reviewPostDto,
+                                                         @RequestPart(value = "image", required = false) List<MultipartFile> images){
         return reviewService.postReview(session, reviewPostDto, images);
     }
 

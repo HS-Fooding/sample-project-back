@@ -26,7 +26,7 @@ public class ReviewRepository {
     }
 
     public List<Review> getAll(){
-        return em.createQuery("select r from Review ", Review.class)
+        return em.createQuery("select r from Review r", Review.class)
                 .getResultList();
     }
 }

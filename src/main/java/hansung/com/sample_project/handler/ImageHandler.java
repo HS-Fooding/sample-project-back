@@ -4,8 +4,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ImageHandler {
@@ -18,11 +20,11 @@ public class ImageHandler {
             return null;
         for(MultipartFile image : images) {
             String path = getRootFolder();
-            String fileName = LocalDateTime.now()  + "_" + String.valueOf(image.getOriginalFilename());
+            String fileName = getNowTime24()  + "_" +image.getOriginalFilename();
 
             try {
                 image.transferTo(new File(path+fileName));
-                imagePath.add("http://13.124.207.219:8080/sample_project/image/fileName");
+                imagePath.add("http://13.124.207.219:8080/sample_project/image/"+fileName);
             } catch (IllegalStateException | IOException e) {
                 e.printStackTrace();
                 return null;
@@ -42,7 +44,7 @@ public class ImageHandler {
             System.out.println("=======================================");
             System.out.println("\n");
 //                folderRoot = "c:/Home/Resource/assets/"; //윈도우 경로 (디스크 필요)
-            rootFolder = "C:/Users/bs860/IdeaProjects/images/"; //윈도우 경로 (디스크 필요)
+            rootFolder = "D://dev/images/"; //윈도우 경로 (디스크 필요)
 
         } else if (os.contains("linux")) {
             System.out.println("\n");
@@ -63,5 +65,13 @@ public class ImageHandler {
             throw new IllegalStateException("Can't decide Image Root Path");
         }
         return rootFolder;
+    }
+
+    public static String getNowTime24() {
+        long time = System.currentTimeMillis();
+        //SimpleDateFormat dayTime = new SimpleDateFormat("hh:mm:ss");
+        SimpleDateFormat dayTime = new SimpleDateFormat("yyyyMMddkkmmss");
+        String str = dayTime.format(new Date(time));
+        return "PT"+str; //TODO [PT는 picture 의미]
     }
 }

@@ -25,7 +25,7 @@ public class Image {
     // 연관관계 편의 메서드 
     public void setReview(Review review) {
         this.review = review;
-        review.getImages().add(this);
+        //review.getImages().add(this);
     }
 
 }
