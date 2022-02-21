@@ -1,5 +1,7 @@
 package hansung.com.sample_project.domain;
 
+import hansung.com.sample_project.dto.ReviewPostDto;
+import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -10,6 +12,7 @@ import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
+@Builder
 public class Review {
 
     @Id @GeneratedValue
@@ -49,5 +52,4 @@ public class Review {
             images.add(i);
         }
     }
-
 }

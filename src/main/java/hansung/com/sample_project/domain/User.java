@@ -3,13 +3,14 @@ package hansung.com.sample_project.domain;
 import hansung.com.sample_project.dto.SignUpRequest;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Getter
+@Getter @Setter
 @Table(name = "users")
 @NoArgsConstructor
 public class User {
