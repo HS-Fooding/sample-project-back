@@ -1,9 +1,10 @@
 package hansung.com.sample_project.dto;
 
-public class UserInfo {
-    private Long id;
+import lombok.Getter;
+import lombok.Setter;
 
-    public Long getId() {
-        return id;
-    }
+@Setter
+@Getter
+public class UserInfo {
+    private String userId;
 }

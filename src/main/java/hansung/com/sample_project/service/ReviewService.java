@@ -65,15 +65,15 @@ public class ReviewService {
 
     @Transactional
     public ResponseEntity<ReviewSimpleGetDto> postReview(HttpSession session, ReviewPostDto reviewPostDto, List<MultipartFile> images) {
-//        UserInfo userInfo = (UserInfo)session.getAttribute("userInfo");
-//        if(userInfo == null) return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-//
-//        User author = userRepository.findById(userInfo.getId());
-        User author = new User();
-        author.setUserId("testId1");
-        author.setUserPassword("1234");
-        author.setNickName("testNickname");
-        author.setEmail("teset@test.test");
+        UserInfo userInfo = (UserInfo)session.getAttribute("userInfo");
+        if(userInfo.getUserId() == null) return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+
+        User author = userRepository.findByUserId(userInfo.getUserId()).get(0);
+//        User author = new User();
+//        author.setUserId("testId1");
+//        author.setUserPassword("1234");
+//        author.setNickName("testNickname");
+//        author.setEmail("teset@test.test");
         userRepository.save(author);
         List<String> imagePaths = ImageHandler.upload(images);
         List<Image> savedImages = new ArrayList<>();
