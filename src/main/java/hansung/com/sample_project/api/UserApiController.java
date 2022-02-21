@@ -51,6 +51,7 @@ public class UserApiController {
     public void logout(HttpSession session) {
         // 세션 해제
         session.setAttribute("loginInfo", null);
+        //
     }
 
     @GetMapping("/hello")
