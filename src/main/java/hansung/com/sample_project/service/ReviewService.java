@@ -66,7 +66,7 @@ public class ReviewService {
     @Transactional
     public ResponseEntity<ReviewSimpleGetDto> postReview(HttpSession session, ReviewPostDto reviewPostDto, List<MultipartFile> images) {
         UserInfo userInfo = (UserInfo)session.getAttribute("userInfo");
-        if(userInfo.getUserId() == null) return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        if(userInfo == null) return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
         User author = userRepository.findByUserId(userInfo.getUserId()).get(0);
 //        User author = new User();
