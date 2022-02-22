@@ -28,14 +28,16 @@ dependencies {
 	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.5.6'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 
+	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+
 //	implementation 'io.jsonwebtoken:jjwt:0.9.1'
 
-//	implementation 'mysql:mysql-connector-java'
-//	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+	implementation 'mysql:mysql-connector-java'
+	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+//	runtimeOnly 'com.h2database:h2:1.4.199'
 
 	compileOnly 'org.projectlombok:lombok'
-//	runtimeOnly 'com.h2database:h2:1.4.199'
-	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 

@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mariadb://13.124.207.219:3306/lgi_test
+    url: jdbc:mysql://localhost:3306/lgi_test?characterEncoding=UTF-8&serverTimezone=Asia/Seoul
     driver-class-name: org.mariadb.jdbc.Driver
     username: root
     password: 2022
@@ -12,14 +12,15 @@ spring:
       password: fooding
       role: USER
   jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     generate-ddl: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     show-sql: true
     properties:
       hibernate:
         format_sql: false
-    defer-datasource-initialization: true
+#    defer-datasource-initialization: true
   logging:
     level:
       org.hibernate.SQL: debug
