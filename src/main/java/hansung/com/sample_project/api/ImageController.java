@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 @Controller
-@CrossOrigin
+@CrossOrigin(origins = "*")
 public class ImageController {
 
     @RequestMapping("/image/{imageName:.+}")

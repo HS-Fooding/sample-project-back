@@ -4,8 +4,8 @@ spring:
     driver-class-name: org.mariadb.jdbc.Driver
     username: root
     password: 2022
-#    initialization-mode: always
-#   sql-script-encoding: UTF-8
+  #    initialization-mode: always
+  #   sql-script-encoding: UTF-8
   security:
     user:
       name: fooding
@@ -20,7 +20,7 @@ spring:
     properties:
       hibernate:
         format_sql: false
-#    defer-datasource-initialization: true
+  #    defer-datasource-initialization: true
   logging:
     level:
       org.hibernate.SQL: debug
