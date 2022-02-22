@@ -17,7 +17,7 @@ public class ReviewGetDto {
     private String content;
     private List<String> images = new ArrayList<>();
     private float star;
-    private List<CommentDto> commentDtos = new ArrayList<>();
+    private List<CommentDto> comments = new ArrayList<>();
     private String registerDate;
     private String modifiedDate;
 
@@ -31,7 +31,7 @@ public class ReviewGetDto {
             this.images.add(image.getPath());
         this.star= review.getStar();
         for(Comment comment : review.getComments()){
-            this.commentDtos.add(CommentDto.from(comment));
+            this.comments.add(CommentDto.from(comment));
         }
         this.registerDate = df.format(review.getTime().getRegisterLocalDateTime());
     }
