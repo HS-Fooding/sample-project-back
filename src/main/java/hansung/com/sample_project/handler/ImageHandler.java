@@ -5,7 +5,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -44,7 +43,8 @@ public class ImageHandler {
             System.out.println("=======================================");
             System.out.println("\n");
 //                folderRoot = "c:/Home/Resource/assets/"; //윈도우 경로 (디스크 필요)
-            rootFolder = "D://dev/images/"; //윈도우 경로 (디스크 필요)
+//            rootFolder = "D://dev/images/"; //윈도우 경로 (디스크 필요)
+            rootFolder = "C:/Users/bs860/IdeaProjects/sample_project/images/";
 
         } else if (os.contains("linux")) {
             System.out.println("\n");
@@ -54,7 +54,8 @@ public class ImageHandler {
             System.out.println("=======================================");
             System.out.println("\n");
 //                folderRoot = "/Home/Resource/assets/"; //리눅스 경로
-            rootFolder = "/capstone/sample_project_jhs/"; //리눅스 경로
+//            rootFolder = "/capstone/sample_project_jhs/"; //리눅스 경로
+            rootFolder = "C:/Users/bs860/IdeaProjects/sample_project/images/";
         } else {
             System.out.println("\n");
             System.out.println("=======================================");

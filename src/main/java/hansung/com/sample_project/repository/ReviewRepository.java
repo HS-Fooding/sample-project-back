@@ -20,7 +20,7 @@ public class ReviewRepository {
 
     // 글 찾기
     public Review findOne(Long id) {
-        return em.createQuery("select r from Review r where id = :id", Review.class)
+        return em.createQuery("select r from Review r where review_id = :id", Review.class)
                 .setParameter("id", id)
                 .getSingleResult();
     }

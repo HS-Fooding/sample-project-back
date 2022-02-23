@@ -1,7 +1,8 @@
 package hansung.com.sample_project.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import hansung.com.sample_project.dto.ReviewPostDto;
-import lombok.Builder;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,7 +15,7 @@ import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Getter @Setter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Review {
 
     @Id @GeneratedValue
@@ -33,6 +34,7 @@ public class Review {
     @OneToMany(mappedBy = "review")
     private List<Image> images = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "comment_review")
     private List<Comment> comments = new ArrayList<>();
 

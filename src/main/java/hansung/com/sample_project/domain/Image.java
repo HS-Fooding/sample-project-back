@@ -9,8 +9,7 @@ import javax.persistence.*;
 import static javax.persistence.FetchType.LAZY;
 
 @Entity
-@Getter
-@Setter
+@Getter @Setter
 public class Image {
 
     @Id @GeneratedValue
@@ -27,5 +26,4 @@ public class Image {
         this.review = review;
         //review.getImages().add(this);
     }
-
 }

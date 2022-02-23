@@ -1,6 +1,7 @@
 package hansung.com.sample_project.domain;
 
 import hansung.com.sample_project.dto.SignUpRequest;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,7 +13,7 @@ import java.util.List;
 @Entity
 @Getter @Setter
 @Table(name = "users")
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
 
     @Id

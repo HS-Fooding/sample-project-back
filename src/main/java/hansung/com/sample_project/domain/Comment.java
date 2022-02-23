@@ -1,6 +1,9 @@
 package hansung.com.sample_project.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -9,7 +12,7 @@ import java.util.List;
 import static javax.persistence.FetchType.LAZY;
 
 @Entity
-@Getter
+@Getter @Setter
 public class Comment {
 
     @Id @GeneratedValue
@@ -34,6 +37,7 @@ public class Comment {
     @JoinColumn(name = "parent_id")
     private Comment parent;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "parent")
     private List<Comment> child = new ArrayList<>();
 
