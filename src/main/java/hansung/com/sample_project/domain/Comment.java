@@ -1,9 +1,9 @@
 package hansung.com.sample_project.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import hansung.com.sample_project.dto.CommentDto;
+import hansung.com.sample_project.dto.CommentPostDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -12,7 +12,8 @@ import java.util.List;
 import static javax.persistence.FetchType.LAZY;
 
 @Entity
-@Getter @Setter
+@Getter
+@NoArgsConstructor
 public class Comment {
 
     @Id @GeneratedValue
@@ -37,9 +38,16 @@ public class Comment {
     @JoinColumn(name = "parent_id")
     private Comment parent;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "parent")
     private List<Comment> child = new ArrayList<>();
+
+    public Comment(Review review, User author, CommentPostDto commentPostDto){
+        this.content = commentPostDto.getContent();
+        this.time = new Time();
+        this.author = author;
+        this.parent = this;
+        addReview(review);
+    }
 
     public void setParent(Comment comment) {
         this.parent = comment;
