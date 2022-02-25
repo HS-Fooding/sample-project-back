@@ -18,7 +18,6 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 
 
-@CrossOrigin("*")
 @RestController
 public class ReviewApiController {
     @Autowired ReviewService reviewService;
@@ -44,7 +43,7 @@ public class ReviewApiController {
         return new ResponseEntity<>(reviewService.getReview(reviewId), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/{reviewId}/comment", method = RequestMethod.POST)
+    @PostMapping("/review/{reviewId}/comment")
     public ResponseEntity<ReviewGetDto> postComment(@PathVariable(value = "reviewId") Long reviewId,
                                                     HttpSession session,
                                                     @RequestBody CommentPostDto commentPostDto){

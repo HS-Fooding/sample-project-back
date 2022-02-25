@@ -18,7 +18,6 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 
-@CrossOrigin("*")
 @RestController
 @RequiredArgsConstructor
 public class UserApiController {

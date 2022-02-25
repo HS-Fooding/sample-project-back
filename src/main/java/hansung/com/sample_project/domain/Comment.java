@@ -1,6 +1,5 @@
 package hansung.com.sample_project.domain;
 
-import hansung.com.sample_project.dto.CommentDto;
 import hansung.com.sample_project.dto.CommentPostDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

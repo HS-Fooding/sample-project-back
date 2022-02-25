@@ -49,6 +49,8 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    //
+
     public void setPasswordAndRole(String password, Role role) {
         this.userPassword = password;
         this.role = role;
