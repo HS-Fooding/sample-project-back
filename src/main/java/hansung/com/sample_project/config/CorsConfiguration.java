@@ -1,4 +1,3 @@
-/*
 package hansung.com.sample_project.config;
 
 import org.springframework.context.annotation.Configuration;
@@ -11,8 +10,7 @@ public class CorsConfiguration implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry){
         registry.addMapping("/**")
-                .allowedOriginPatterns("*")
+                .allowedOriginPatterns("**")
                 .allowCredentials(true);
     }
 }
-*/
