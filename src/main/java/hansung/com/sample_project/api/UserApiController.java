@@ -48,9 +48,9 @@ public class UserApiController {
         // TODO : 로그인에 대한 세션 처리 (세션은 서버에서 관리)
         session.setAttribute("userInfo", userInfo);
         Cookie cookie = new Cookie("userInfo", userInfo.getUserId());
-        cookie.setDomain("/**");
+        cookie.setPath("/login");
+//        cookie.setDomain("/**");
         /*
-        cookie.setPath("/**");
         cookie.setMaxAge(3600);
         response.setHeader("Set-Cookie", "userInfo; SameSite=None;");
         response.addCookie(cookie);*/
