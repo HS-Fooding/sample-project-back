@@ -22,6 +22,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin("http://localhost:3000")
 public class UserApiController {
     private final UserService userService;
 
