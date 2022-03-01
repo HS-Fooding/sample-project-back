@@ -14,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -22,7 +21,6 @@ import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin("http://localhost:3000")
 public class UserApiController {
     private final UserService userService;
 
@@ -47,13 +45,10 @@ public class UserApiController {
         userInfo.setUserId(userDetails.getUsername());
         // TODO : 로그인에 대한 세션 처리 (세션은 서버에서 관리)
         session.setAttribute("userInfo", userInfo);
-        Cookie cookie = new Cookie("userInfo", userInfo.getUserId());
-        cookie.setPath("/login");
-//        cookie.setDomain("/**");
-        /*
-        cookie.setMaxAge(3600);
-        response.setHeader("Set-Cookie", "userInfo; SameSite=None;");
-        response.addCookie(cookie);*/
+//        Cookie cookie = new Cookie("userInfo", userInfo.getUserId());
+//        cookie.setMaxAge(3600);
+//        response.setHeader("Set-Cookie", "userInfo; SameSite=None;");
+//        response.addCookie(cookie);
 
         return HttpStatus.OK;
     }
@@ -68,14 +63,13 @@ public class UserApiController {
 
     @GetMapping("/hello")
     public HttpStatus hello(HttpSession session) {
-        if(session.getAttribute("userDetails") != null) {
+        if (session.getAttribute("userDetails") != null) {
             UserDetails userDetails = (UserDetails) session.getAttribute("userDetails");
             System.out.println("1 " + session.getAttribute("userDetails"));
             System.out.println("2 " + userDetails.getUsername());
             System.out.println("3 " + userDetails.getPassword());
 
             return HttpStatus.OK;
-        }
-        else return HttpStatus.BAD_REQUEST;
+        } else return HttpStatus.BAD_REQUEST;
     }
 }

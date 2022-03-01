@@ -1,3 +1,4 @@
+server.servlet.session.cookie.name: HELLO
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/lgi_test?characterEncoding=UTF-8&serverTimezone=Asia/Seoul

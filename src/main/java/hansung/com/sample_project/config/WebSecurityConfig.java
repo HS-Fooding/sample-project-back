@@ -14,7 +14,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().authorizeRequests()
-                .antMatchers("/join", "/login", "logout", "/hello", "/review/**", "/image/*").permitAll()
+                .antMatchers("/join", "/login", "logout", "/hello", "/review/**", "/image/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/join").permitAll()
                 .antMatchers(HttpMethod.POST, "/login").permitAll()
                 .antMatchers(HttpMethod.POST, "/logout").permitAll()
