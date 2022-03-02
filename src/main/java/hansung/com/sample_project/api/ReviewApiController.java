@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -32,8 +33,12 @@ public class ReviewApiController {
     }
 
     @GetMapping("/review")
-    public ResponseEntity<List<ReviewSimpleGetDto>> getReviews(){
+    public ResponseEntity<List<ReviewSimpleGetDto>> getReviews(HttpSession httpSession, HttpServletRequest httpServletRequest){
         List<ReviewSimpleGetDto> reviewSimpleGetDtoList = reviewService.getReviews();
+        System.out.println("IP : " + httpServletRequest.getRemoteAddr());
+        System.out.println("Host : " + httpServletRequest.getRemoteHost());
+        System.out.println("Port : " + httpServletRequest.getRemotePort());
+        System.out.println("Session ID : " + httpServletRequest.getRequestedSessionId());
         return new ResponseEntity<>(reviewSimpleGetDtoList, HttpStatus.OK);
     }
 

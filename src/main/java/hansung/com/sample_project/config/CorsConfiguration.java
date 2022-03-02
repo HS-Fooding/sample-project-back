@@ -6,25 +6,15 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class CorsConfiguration implements WebMvcConfigurer {
+
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOriginPatterns("**")
+                .allowedOrigins("http://1.224.241.195:3000", "http://124.49.33.39:3000",
+                                    "http://localhost:3000", "http://127.0.0.1:3000",
+                                    "http://192.168.219.106:3000")
                 .allowedMethods("HEAD", "GET", "POST", "PUT", "DELETE", "PATCH")
                 .allowCredentials(true)
                 .maxAge(3600);
     }
-
-    /*@Bean
-    public ServletContextInitializer jsessions() {
-        return new ServletContextInitializer() {
-            @Override
-            public void onStartup(ServletContext servletContext) throws ServletException {
-                servletContext.setSessionTrackingModes(Collections.singleton(SessionTrackingMode.COOKIE));
-                SessionCookieConfig sessionCookieConfig = servletContext.getSessionCookieConfig();
-                sessionCookieConfig.setPath("/");
-                sessionCookieConfig.setHttpOnly(false);
-            }
-        };
-    }*/
 }
