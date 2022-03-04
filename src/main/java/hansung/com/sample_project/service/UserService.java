@@ -8,6 +8,9 @@ import hansung.com.sample_project.exception.UserEmailAlreadyExistsException;
 import hansung.com.sample_project.exception.UserIdExistsException;
 import hansung.com.sample_project.exception.UserNickNameExistsException;
 import hansung.com.sample_project.repository.UserRepository;
+import io.jsonwebtoken.Header;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,7 +21,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -72,12 +77,26 @@ public class UserService implements UserDetailsService {
         return new org.springframework.security.core.userdetails.User(user.getUserId(), user.getUserPassword(), authorities);
     }
 
-    public void validatePassword(SignInRequest req) throws LoginFailureException {
-        List<User> userTmp = userRepository.findByUserId(req.getUserId());
+
+    public String makeJwtToken(SignInRequest signInRequest) throws LoginFailureException {
+        // 올바른 아이디, 비번인지 체크
+        List<User> userTmp = userRepository.findByUserId(signInRequest.getUserId());
         User user = userTmp.get(0);
 
-        if(!passwordEncoder.matches(req.getUserPassword(), user.getUserPassword())) {
+        if(!passwordEncoder.matches(signInRequest.getUserPassword(), user.getUserPassword())) {
             throw new LoginFailureException();
         }
+
+        // 토큰 발급
+        Date now = new Date();
+        return Jwts.builder()
+                .setHeaderParam(Header.TYPE, Header.JWT_TYPE)
+                .setIssuer("fresh")
+                .setIssuedAt(now)
+                .setExpiration(new Date(now.getTime() + Duration.ofMinutes(30).toMillis()))
+                .claim("id", signInRequest.getUserId())
+                .claim("password", signInRequest.getUserPassword())
+                .signWith(SignatureAlgorithm.HS256, "secret")
+                .compact();
     }
 }
