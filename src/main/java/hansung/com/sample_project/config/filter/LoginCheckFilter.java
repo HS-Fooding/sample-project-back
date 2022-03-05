@@ -1,4 +1,4 @@
-package hansung.com.sample_project.config;
+package hansung.com.sample_project.config.filter;
 
 import org.springframework.util.PatternMatchUtils;
 
@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public class LoginCheckFilter implements Filter {
 
-    private static final String SESSION_ID = "token";
+    private static final String SESSION_ID = "Token";
 
     private static final String[] whitelist = {"/", "/login", "/logout", "/review", "/hello"};
 

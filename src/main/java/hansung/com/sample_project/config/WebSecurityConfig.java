@@ -26,7 +26,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin().disable()
                 .httpBasic().disable()
                 .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); // JSESSIONID 해제
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); // 세션 해제
     }
 
     @Bean
