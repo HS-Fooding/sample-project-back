@@ -8,10 +8,18 @@ import hansung.com.sample_project.exception.LoginFailureException;
 import hansung.com.sample_project.exception.UserEmailAlreadyExistsException;
 import hansung.com.sample_project.exception.UserIdExistsException;
 import hansung.com.sample_project.exception.UserNickNameExistsException;
+import hansung.com.sample_project.provider.JwtTokenProvider;
+import hansung.com.sample_project.service.UserDetailsService;
 import hansung.com.sample_project.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +32,8 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class UserApiController {
     private final UserService userService;
+    private final UserDetailsService userDetailsService;
+    private final AuthenticationManager authenticationManager;
 
     @PostMapping("/join")
     public SignUpResponse join(@RequestBody @Valid SignUpRequest request)
@@ -39,18 +49,23 @@ public class UserApiController {
                                                HttpServletResponse response , HttpServletRequest httpServletRequest)
             throws LoginFailureException {
         System.out.println("###############LOG-IN############");
-
-        // TODO : 로그인에 대한 세션 처리 (세션은 서버에서 관리)
-
-
-        String token = userService.makeJwtToken(signInRequest);
-        session.setAttribute("Token", token); // 세션으로 저장
-
+        Authentication authentication;
+        try {
+            authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(signInRequest.getUserId(), signInRequest.getUserPassword()));
+        } catch (BadCredentialsException e){
+            System.out.println("BadCredentialException");
+            return new ResponseEntity<>(HttpStatus.NOT_EXTENDED);
+        }
+        UserDetails userDetails = userDetailsService.loadUserByUsername(signInRequest.getUserId());
+        String token = JwtTokenProvider.generate(signInRequest);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
         return ResponseEntity.ok(new TokenResponse(token, "bearer"));
     }
 
     @PostMapping("/logout")
     @ResponseStatus(HttpStatus.OK)
+
     public void logout(HttpSession session) {
         // 세션 해제
         session.setAttribute("loginInfo", null);

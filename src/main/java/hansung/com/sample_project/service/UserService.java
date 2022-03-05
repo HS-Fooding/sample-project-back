@@ -8,6 +8,7 @@ import hansung.com.sample_project.exception.UserEmailAlreadyExistsException;
 import hansung.com.sample_project.exception.UserIdExistsException;
 import hansung.com.sample_project.exception.UserNickNameExistsException;
 import hansung.com.sample_project.repository.UserRepository;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -29,7 +30,7 @@ import java.util.List;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class UserService implements UserDetailsService {
+public class UserService{
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
@@ -65,17 +66,7 @@ public class UserService implements UserDetailsService {
             throw new UserIdExistsException(req.getUserId());
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
-        List<User> userTmp = userRepository.findByUserId(userId);
-        User user = userTmp.get(0);
 
-        System.out.println("!!!!!!!!!!!!!!!!!!!!I'm here bro!!!!!!!!!!!!!!!");
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(String.valueOf(user.getRole())));
-
-        return new org.springframework.security.core.userdetails.User(user.getUserId(), user.getUserPassword(), authorities);
-    }
 
 
     public String makeJwtToken(SignInRequest signInRequest) throws LoginFailureException {
@@ -91,7 +82,7 @@ public class UserService implements UserDetailsService {
         Date now = new Date();
         return Jwts.builder()
                 .setHeaderParam(Header.TYPE, Header.JWT_TYPE)
-                .setIssuer("fresh")
+                .setIssuer("fooding")
                 .setIssuedAt(now)
                 .setExpiration(new Date(now.getTime() + Duration.ofMinutes(30).toMillis()))
                 .claim("id", signInRequest.getUserId())
@@ -99,4 +90,5 @@ public class UserService implements UserDetailsService {
                 .signWith(SignatureAlgorithm.HS256, "secret")
                 .compact();
     }
+
 }
