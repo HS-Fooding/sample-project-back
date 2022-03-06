@@ -31,11 +31,11 @@ dependencies {
 
 	implementation 'io.jsonwebtoken:jjwt:0.9.1'
 
-	runtimeOnly 'com.h2database:h2:1.4.199'
+//	runtimeOnly 'com.h2database:h2:1.4.199'
 
 //    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
-//	implementation 'mysql:mysql-connector-java'
-//    runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+	implementation 'mysql:mysql-connector-java'
+    implementation 'org.mariadb.jdbc:mariadb-java-client'
 
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
