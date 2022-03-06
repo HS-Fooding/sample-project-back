@@ -29,6 +29,7 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final ImageRepository imageRepository;
     private final UserRepository userRepository;
+    private final SecurityService securityService;
 
     // 글 등록
    /* @Transactional
@@ -60,18 +61,15 @@ public class ReviewService {
     }
 
     @Transactional
-    public ResponseEntity<ReviewSimpleGetDto> postReview(HttpSession session,
-                                                         ReviewPostDto reviewPostDto,
+    public ResponseEntity<ReviewSimpleGetDto> postReview(ReviewPostDto reviewPostDto,
                                                          List<MultipartFile> images) {
-        UserInfo userInfo = (UserInfo)session.getAttribute("userInfo");
-        if(userInfo == null) return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+//        UserInfo userInfo = (UserInfo)session.getAttribute("userInfo");
+//        if(userInfo == null) return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+//
+//        User author = userRepository.findByUserId(userInfo.getUserId()).get(0);
+        User author = securityService.getUser();
+        if(author == null) return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        User author = userRepository.findByUserId(userInfo.getUserId()).get(0);
-//        User author = new User();
-//        author.setUserId("testId1");
-//        author.setUserPassword("1234");
-//        author.setNickName("testNickname");
-//        author.setEmail("teset@test.test");
         userRepository.save(author);
         List<String> imagePaths = new ArrayList<>();
         if(images !=null) {

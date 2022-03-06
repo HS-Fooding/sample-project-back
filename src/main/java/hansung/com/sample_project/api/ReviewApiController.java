@@ -26,10 +26,10 @@ public class ReviewApiController {
     @Autowired CommentService commentService;
 
     @PostMapping("/review")
-    public ResponseEntity<ReviewSimpleGetDto> postReview(HttpSession session,
+    public ResponseEntity<ReviewSimpleGetDto> postReview(
                                 @RequestPart(value = "review") ReviewPostDto reviewPostDto,
                                 @RequestPart(value = "image", required = false) List<MultipartFile> images){
-        return reviewService.postReview(session, reviewPostDto, images);
+        return reviewService.postReview(reviewPostDto, images);
     }
 
     @GetMapping("/review")
@@ -50,9 +50,8 @@ public class ReviewApiController {
 
     @PostMapping("/review/{reviewId}/comment")
     public ResponseEntity<ReviewGetDto> postComment(@PathVariable(value = "reviewId") Long reviewId,
-                                                    HttpSession session,
                                                     @RequestBody CommentPostDto commentPostDto){
-        User author = securityService.getUser(session);
+        User author = securityService.getUser();
         if (author == null) return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         ReviewGetDto reviewGetDto = commentService.postComment(reviewId, author, commentPostDto);
         return new ResponseEntity<>(reviewGetDto, HttpStatus.OK);
