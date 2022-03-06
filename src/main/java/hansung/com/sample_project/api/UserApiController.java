@@ -1,29 +1,26 @@
 package hansung.com.sample_project.api;
 
+import hansung.com.sample_project.config.filter.JwtFilter;
 import hansung.com.sample_project.dto.SignInRequest;
 import hansung.com.sample_project.dto.SignUpRequest;
 import hansung.com.sample_project.dto.SignUpResponse;
 import hansung.com.sample_project.dto.TokenResponse;
-import hansung.com.sample_project.exception.LoginFailureException;
 import hansung.com.sample_project.exception.UserEmailAlreadyExistsException;
 import hansung.com.sample_project.exception.UserIdExistsException;
 import hansung.com.sample_project.exception.UserNickNameExistsException;
 import hansung.com.sample_project.provider.JwtTokenProvider;
-import hansung.com.sample_project.service.UserDetailsService;
+import hansung.com.sample_project.service.CustomUserDetailsService;
 import hansung.com.sample_project.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -32,8 +29,9 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class UserApiController {
     private final UserService userService;
-    private final UserDetailsService userDetailsService;
-    private final AuthenticationManager authenticationManager;
+    private final CustomUserDetailsService userDetailsService;
+    private final JwtTokenProvider tokenProvider;
+    private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
     @PostMapping("/join")
     public SignUpResponse join(@RequestBody @Valid SignUpRequest request)
@@ -45,22 +43,24 @@ public class UserApiController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<TokenResponse> login(@RequestBody @Valid SignInRequest signInRequest, HttpSession session,
-                                               HttpServletResponse response , HttpServletRequest httpServletRequest)
-            throws LoginFailureException {
-        System.out.println("###############LOG-IN############");
-        Authentication authentication;
-        try {
-            authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(signInRequest.getUserId(), signInRequest.getUserPassword()));
-        } catch (BadCredentialsException e){
-            System.out.println("BadCredentialException");
-            return new ResponseEntity<>(HttpStatus.NOT_EXTENDED);
-        }
-        UserDetails userDetails = userDetailsService.loadUserByUsername(signInRequest.getUserId());
-        String token = JwtTokenProvider.generate(signInRequest);
+    public ResponseEntity<TokenResponse> login(@RequestBody @Valid SignInRequest signInRequest) {
+        // userId와 userPassword로 authentication 토큰 생성
+        UsernamePasswordAuthenticationToken authenticationToken =
+                new UsernamePasswordAuthenticationToken(signInRequest.getUserId(), signInRequest.getUserPassword());
+
+        // authenticate를 실행할 때, loadUserByUsername 메소드 실행됨
+        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+        
+        // authentication 객체를 SecurityContext에 저장
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        return ResponseEntity.ok(new TokenResponse(token, "bearer"));
+
+        // jwt 토큰 생성
+        String jwt = tokenProvider.createToken(authentication);
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
+
+        return new ResponseEntity<>(new TokenResponse(jwt), httpHeaders, HttpStatus.OK);
     }
 
     @PostMapping("/logout")

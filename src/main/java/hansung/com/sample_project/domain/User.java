@@ -9,6 +9,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter @Setter
@@ -46,16 +47,14 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Favor favor;
 
-    @Enumerated(EnumType.STRING)
-    private Role role;
+    @ManyToMany(cascade = CascadeType.MERGE)
+    @JoinTable(
+            name = "user_role",
+            joinColumns = @JoinColumn(name = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles;
 
     //
-
-    public void setPasswordAndRole(String password, Role role) {
-        this.userPassword = password;
-        this.role = role;
-    }
-
 
     public User(SignUpRequest request) {
         this.userId = request.getUserId();
@@ -65,10 +64,9 @@ public class User {
         this.sex = request.getSex();
         this.email = request.getEmail();
         this.age = request.getAge();
-        this.role = request.getRole();
     }
 
-    public User(String userId, String userPassword, String userName, String nickName, Boolean sex, String email, int age, Role role) {
+    public User(String userId, String userPassword, String userName, String nickName, Boolean sex, String email, int age) {
         this.userId = userId;
         this.userPassword = userPassword;
         this.sex = sex;
@@ -76,7 +74,6 @@ public class User {
         this.nickName = nickName;
         this.email = email;
         this.age = age;
-        this.role = role;
     }
 
     public void setReviews(Review review) {
@@ -84,5 +81,8 @@ public class User {
     }
     public void setUserPassword(String password) {
         this.userPassword = password;
+    }
+    public void setAuthorities(List<String> roles) {
+
     }
 }

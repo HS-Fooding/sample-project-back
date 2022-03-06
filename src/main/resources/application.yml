@@ -1,27 +1,30 @@
 spring:
   datasource:
-    url: jdbc:mysql://13.124.207.219:3306/lgi_test?characterEncoding=UTF-8&serverTimezone=Asia/Seoul
-    driver-class-name: org.mariadb.jdbc.Driver
-    username: root
-    password: 2022
-#  security:
-##    require-ssl: true
-#    user:
-#      name: fooding
-#      password: fooding
-#      role: USER
+    url: jdbc:h2:tcp://localhost/~/sample_project
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  security:
+    user:
+      name: fooding
+      password: fooding
+      role: USER
   jpa:
-    database-platform: org.hibernate.dialect.MariaDBDialect
+    database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     properties:
       hibernate:
         format_sql: true
-  defer-datasource-initialization: true
-  logging:
-    level:
-      org.hibernate.SQL: debug
-      org.hibernate.type: trace
-  jackson:
-    serialization:
-      FAIL_ON_EMPTY_BEANS: false
+#  defer-datasource-initialization: true
+#logging:
+#  level:
+#    org.hibernate.SQL: debug
+#    org.hibernate.type: trace
+jackson:
+  serialization:
+    FAIL_ON_EMPTY_BEANS: false
+jwt:
+  header: Authorization
+  secret: secretasdfasdfAasdfSDFSl1231HALSKDJFHAasdasdfkasdlfkjasdflkjahewlkjhrlkj2l1kj3h4lkjhasldkjfhalskdjfh
+  token-validity-in-seconds: 86400

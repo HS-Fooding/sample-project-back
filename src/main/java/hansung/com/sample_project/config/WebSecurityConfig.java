@@ -1,27 +1,54 @@
 package hansung.com.sample_project.config;
 
-import hansung.com.sample_project.config.filter.JwtAuthenticationFilter;
+import hansung.com.sample_project.handler.JwtAccessDeniedHandler;
+import hansung.com.sample_project.provider.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private JwtAuthenticationFilter jwtAuthenticationFilter;
+    private JwtTokenProvider tokenProvider;
+    @Autowired
+    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    @Autowired
+    private JwtAccessDeniedHandler jwtAccessDeniedHandler;
+
+    public WebSecurityConfig(
+            JwtTokenProvider tokenProvider,
+            JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
+            JwtAccessDeniedHandler jwtAccessDeniedHandler
+    ) {
+        this.tokenProvider = tokenProvider;
+        this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
+        this.jwtAccessDeniedHandler = jwtAccessDeniedHandler;
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http    .cors()
+        http
+                .cors()
+                .and()
+                .formLogin().disable()
+                .httpBasic().disable()
+                .csrf().disable()
+
+                .exceptionHandling()
+                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                .accessDeniedHandler(jwtAccessDeniedHandler)
+
+                .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 세션 해제
+
                 .and()
                 .authorizeRequests()
                 .antMatchers("/join", "/login", "logout", "/hello", "/review/**", "/image/**").permitAll()
@@ -29,26 +56,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/login").permitAll()
                 .antMatchers(HttpMethod.POST, "/logout").permitAll()
                 .anyRequest().authenticated()
+
                 .and()
-                .formLogin().disable()
-                .httpBasic().disable()
-                .csrf().disable()
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); // 세션 해제
+                .apply(new JwtSecurityConfig(tokenProvider)); //  내가 만든 JwtSecurityConfig 적용
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
-
-    @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
-
-//    private JwtAuthenticationFilter jwtAuthenticationFilter() {
-//        return new JwtAuthenticationFilter();
-//    }
 }

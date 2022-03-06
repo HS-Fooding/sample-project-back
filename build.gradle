@@ -29,13 +29,16 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'commons-io:commons-io:2.6'
 
-	implementation 'io.jsonwebtoken:jjwt:0.9.1'
+    compileOnly group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.2'
+    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.2'
+    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.2'
 
-//	runtimeOnly 'com.h2database:h2:1.4.199'
+
+    runtimeOnly 'com.h2database:h2:1.4.199'
 
 //    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
-	implementation 'mysql:mysql-connector-java'
-    implementation 'org.mariadb.jdbc:mariadb-java-client'
+//	implementation 'mysql:mysql-connector-java'
+//    implementation 'org.mariadb.jdbc:mariadb-java-client'
 
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'

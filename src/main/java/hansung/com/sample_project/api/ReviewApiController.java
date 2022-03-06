@@ -32,7 +32,7 @@ public class ReviewApiController {
         return reviewService.postReview(session, reviewPostDto, images);
     }
 
-    @GetMapping("/review")
+     @GetMapping("/review")
     public ResponseEntity<List<ReviewSimpleGetDto>> getReviews(HttpSession httpSession, HttpServletRequest httpServletRequest){
         List<ReviewSimpleGetDto> reviewSimpleGetDtoList = reviewService.getReviews();
         System.out.println("IP : " + httpServletRequest.getRemoteAddr());
@@ -52,6 +52,7 @@ public class ReviewApiController {
     public ResponseEntity<ReviewGetDto> postComment(@PathVariable(value = "reviewId") Long reviewId,
                                                     HttpSession session,
                                                     @RequestBody CommentPostDto commentPostDto){
+
         User author = securityService.getUser(session);
         if (author == null) return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         ReviewGetDto reviewGetDto = commentService.postComment(reviewId, author, commentPostDto);
